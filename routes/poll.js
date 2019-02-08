@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Vote = require('../models/Vote');
+
 const Pusher = require('pusher');
+
+
 
 var pusher = new Pusher({
     appId: '709936',
@@ -17,14 +22,23 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    pusher.trigger('os-poll', 'os-vote', {
-        points: 1,
-        os: req.body.os
+    const newVote = {
+        os: req.body.os,
+        points: 1
+    }
+
+    new Vote(newVote).save().then(vote => {
+        pusher.trigger('os-poll', 'os-vote', {
+            points: parseInt(vote.points),
+            os: vote.os
+        });
+        return res.json({
+            success: true,
+            message: 'Thank you for voting'
+        });
     });
-    return res.json({
-        success: true,
-        message: 'Thank you for voting'
-    });
-})
+
+
+});
 
 module.exports = router;
