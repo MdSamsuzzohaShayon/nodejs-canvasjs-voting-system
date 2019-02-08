@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 //CORS IS FOR CROSS DOMAIN FUNCTIONLITY
 const cors = require('cors'); 
 
+//DB CONFIG
+require('./config/db');
+
 const app = express();
 
 const poll = require('./routes/poll');
