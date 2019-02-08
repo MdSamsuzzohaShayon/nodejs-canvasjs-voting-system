@@ -25,6 +25,15 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 });
 
+// THIS TARGET GET REQUEST
+fetch('http://localhost:3000/poll')
+    .then(res=> res.json())
+    .then(data => {
+        console.log(data);
+
+    });
+
+
 
 let dataPoints = [{
         label: 'Windows',
@@ -72,11 +81,11 @@ if (chartContainer) {
 
     var channel = pusher.subscribe('os-poll');
     channel.bind('os-vote', function (data) {
-        dataPoints = dataPoints.map(x=> {
-            if(x.label == data.os){
+        dataPoints = dataPoints.map(x => {
+            if (x.label == data.os) {
                 x.y += data.points;
                 return x;
-            }else{
+            } else {
                 return x;
             }
         });
